@@ -6,7 +6,7 @@ export function App() {
             <header className="app-header">
                 <h1>My App</h1>
             </header>
-            <main class="container">
+            <main className="container">
                 <Home />
             </main>
         </section>
