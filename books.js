@@ -1,6 +1,8 @@
+export function getBooks() {
+    return booksData
+}
 
-
-const books = [
+const booksData = [
     {
         "id": "OXeMG8wNskc",
         "title": "metus hendrerit",
