@@ -1,5 +1,5 @@
 import { getBooks } from '../books.js'
-import { utilService } from './util.service.js'
+import { saveToStorage, loadFromStorage, makeId } from './util.service.js'
 import { storageService } from './async-storage.service.js'
 
 const BOOK_KEY = 'BOOK_DB'
@@ -71,15 +71,15 @@ function getNextbookId(bookId) {
 }
 
 function _createBooks() {
-    let books = utilService.loadFromStorage(BOOK_KEY)
+    let books = loadFromStorage(BOOK_KEY)
     if (!books || !books.length) {
         books = getBooks()
-        utilService.saveToStorage(BOOK_KEY, books)
+        saveToStorage(BOOK_KEY, books)
     }
 }
 
 function _createBook(title, author) {
     const book = getNewBook(title, author)
-    book.id = utilService.makeId()
+    book.id = makeId()
     return book
 }
