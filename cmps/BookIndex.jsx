@@ -11,8 +11,12 @@ export function BookIndex() {
 		bookservice.query().then(setBooks)
 	}, [])
 
+	function onRemoveBook(bookId) {
+		bookservice
+			.remove(bookId)
+			.then(setBooks((books) => books.filter((book) => book.id !== bookId)))
+	}
+
 	if (!books) return <div>Loading...</div>
-	return (
-        <BookList books={books}/>
-	)
+	return <BookList books={books} onRemoveBook={onRemoveBook} />
 }
