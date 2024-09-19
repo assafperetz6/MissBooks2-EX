@@ -21,6 +21,7 @@
     }
 }
 
+
 .book > * {
     padding: 5px;
 }
@@ -32,4 +33,21 @@
 
 .book img {
     max-height: 250px;
+}
+
+.book:hover {
+    background-color: rgba(63, 63, 100, 0.521);
+
+    cursor: pointer;
+}
+
+.book-actions {
+    display: flex;
+    justify-content: space-between;
+
+    width: 100%;
+
+    > * {
+        border: .5px solid var(--gray2);
+    }
 }

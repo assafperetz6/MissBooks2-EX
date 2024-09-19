@@ -1,0 +1,26 @@
+.book-details {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    padding-inline: 40px;
+
+    background-color: var(--clr2bg);
+
+    h2 {
+        font-family: 'Courier New', Courier, monospace;
+    }
+}
+
+.book-details img {
+    max-width: 30vw;
+
+    padding: 20px;
+    border: 1px solid var(--gray3);
+    margin: 10px;
+}
+
+.book-details p {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
