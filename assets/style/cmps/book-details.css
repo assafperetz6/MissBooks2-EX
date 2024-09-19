@@ -1,14 +1,15 @@
 .book-details {
-    display: flex;
-    flex-direction: column;
+    display: grid;
 
-    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    place-items: center;
 
     padding-inline: 40px;
 
     background-color: var(--clr2bg);
 
     h2 {
+        text-align: center;
         font-family: 'Courier New', Courier, monospace;
     }
 }
@@ -23,4 +24,8 @@
 
 .book-details p {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+dialog.edit {
+    display: flex;
 }
