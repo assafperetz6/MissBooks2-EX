@@ -29,6 +29,9 @@ a {
   color: unset;
 }
 
+.bold {
+  font-weight: bold;
+}
 
 
 /* Dont stretch my Media */
