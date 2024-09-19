@@ -20,6 +20,12 @@
     align-items: center;
 }
 
+/* grid helpers */
+
+.full {
+    grid-column: 1 / -1;
+}
+
 /* text helpers */
 
 .colored-text {

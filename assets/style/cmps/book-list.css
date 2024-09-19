@@ -1,0 +1,35 @@
+.book-list-container {
+    padding: 20px;
+
+    background-color:var(--clr2bg);
+}
+
+.book-list {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    > * {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        place-items: center;
+
+        padding: 10px;
+        border: 1px solid var(--gray2);
+
+        text-align: center;
+    }
+}
+
+.book > * {
+    padding: 5px;
+}
+
+.book h2 {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.25rem;
+}
+
+.book img {
+    max-height: 250px;
+}
