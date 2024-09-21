@@ -6,7 +6,7 @@ const BOOK_KEY = 'BOOK_DB'
 var gFilterBy = { txt: '', price: 0 }
 _createBooks()
 
-export const bookservice = {
+export const bookService = {
     query,
     get,
     remove,

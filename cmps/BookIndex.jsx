@@ -1,4 +1,4 @@
-import { bookservice } from '../services/book.service.js'
+import { bookService } from '../services/book.service.js'
 import { BookList } from './BookList.jsx'
 import { BookDetails } from './BookDetails.jsx'
 
@@ -9,14 +9,14 @@ export function BookIndex() {
 	const [selectedBook, setSelectedBook] = useState(null)
 
 	useEffect(() => {
-		bookservice
+		bookService
 			.query()
 			.then(setBooks)
 			.catch((err) => console.log('err:', err))
 	}, [])
 
 	function onSelectBook(bookId) {
-		bookservice
+		bookService
 			.get(bookId)
 			.then(setSelectedBook)
 			.catch((err) => console.log('err:', err))
@@ -27,20 +27,12 @@ export function BookIndex() {
 	}
 
 	function onRemoveBook(bookId) {
-		bookservice
+		bookService
 			.remove(bookId)
 			.then(setBooks((books) => books.filter((book) => book.id !== bookId)))
 			.catch((err) => console.log('err:', err))
 
 		onBack()
-	}
-
-	function updateBook(book) {
-		save(book).then(book =>
-			setBooks(prev => (
-                [...prev.filter((prevBook) => prevBook.id !== book), book])
-            )
-		)
 	}
 
 	if (selectedBook)
@@ -49,7 +41,7 @@ export function BookIndex() {
 				book={selectedBook}
 				onBack={onBack}
 				onRemoveBook={onRemoveBook}
-                updateBook={updateBook}
+                onSelectBook={onSelectBook}
 			/>
 		)
 	if (!books) return <div>Loading...</div>
