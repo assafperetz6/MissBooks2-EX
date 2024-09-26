@@ -27,6 +27,12 @@ export function BookDetails({ bookId, onBack, onRemoveBook }) {
 			.catch((err) => console.error('err:', err))
 	}
 
+	function setReadingLevel(pageCount) {
+		if (pageCount >= 500) return 'Serious Reading'
+		if (pageCount >= 200) return 'Decent Reading'
+		if (pageCount < 100) return 'Light Reading'
+	}
+
 	// function onSaveBook(ev, bookToEdit) {
 	//     ev.preventDefault()
 
@@ -39,28 +45,6 @@ export function BookDetails({ bookId, onBack, onRemoveBook }) {
 	//         .catch(err => {
 	//             console.log('Had issues with book save:', err)
 	//         })
-	// }
-
-	// function handleOnChange({ target }) {
-	//     const { name: field, type } = target
-	//     let { value } = target
-
-	// 	console.log(field, type, value)
-
-	//     switch (type) {
-	//         case 'number':
-	//         case 'range':
-	//             value = +value
-	//             break;
-
-	//         case 'checkbox':
-	//             value = target.checked
-	//             break
-	//     }
-
-	//     if (field === 'listPrice') setBookToEdit(book => ({...book, listPrice: {...listPrice, amount: value}}))
-	// 	else if (field === 'authors') setBookToEdit(book => ({...book, authors: value.split(',')}))
-	//     else setBookToEdit(book => ({...book, [field]: value}))
 	// }
 
 	if (!book) return <div>Loading...</div>
@@ -94,7 +78,7 @@ export function BookDetails({ bookId, onBack, onRemoveBook }) {
 					<span className="bold">Published:</span> {publishedDate}
 				</li>
 				<li>
-					<span className="bold">Page count:</span> {pageCount}
+					<span className="bold">Page count:</span> <span>{pageCount} - {setReadingLevel(pageCount)}</span>
 				</li>
 				<li>
 					<span className="bold">Categories:</span> {categories.join(', ')}
@@ -105,41 +89,6 @@ export function BookDetails({ bookId, onBack, onRemoveBook }) {
 				<button onClick={() => onUpdateBook(bookId)}>Edit</button>
 				<button onClick={onBack}>Back</button>
 			</section>
-
-			{/* <dialog className={isEdit ? 'edit' : ''}>
-				<form
-					method="dialog"
-					onSubmit={(Event) => onSaveBook(Event, bookToEdit)}
-				>
-					<input onChange={handleOnChange} type="text" name="title" placeholder={title}/>
-					<input
-						onChange={handleOnChange}
-						type="text"
-						name="authors"
-						placeholder={authors}
-					/>
-					<input
-						onChange={handleOnChange}
-						type="number"
-						name="listPrice"
-						placeholder={listPrice.amount}
-					/>
-					<input
-						onChange={handleOnChange}
-						type="text"
-						name="publishedDate"
-						placeholder={publishedDate}
-					/>
-
-					<Input
-						type="number"
-						value={listPrice.amount}
-						onChange={(value) => setBookToEdit((book) => ({...book, listPrice: { ...book.listPrice, amount: +value }}))}
-					/>
-					<ArrayInput value={authors} onChange={setBookDetail('authors')} />
-					<button>Save</button>
-				</form>
-			</dialog> */}
 		</article>
 	)
 }
