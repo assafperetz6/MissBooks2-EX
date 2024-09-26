@@ -34,10 +34,15 @@ export function BookDetails({ bookId, onBack, onRemoveBook }) {
 	}
 
 	function isOldNew(publishedDate) {
-		const currDate = new Date
+		const currDate = new Date()
 
 		if (currDate.getFullYear() - publishedDate <= 1) return 'New'
 		if (currDate.getFullYear() - publishedDate > 10) return 'Vintage'
+	}
+
+	function isCheapExpensive(price) {
+		if (price > 150) return 'expensive'
+		if (price < 20) return 'cheap'
 	}
 
 	// function onSaveBook(ev, bookToEdit) {
@@ -76,17 +81,23 @@ export function BookDetails({ bookId, onBack, onRemoveBook }) {
 			<p>{description}</p>
 			<ul>
 				<li>
-					<span className="bold">Price:</span> {listPrice.amount}{' '}
-					{listPrice.currencyCode}
+					<span className="bold">Price:</span>{' '}
+					<span className={isCheapExpensive(listPrice.amount)}>
+						{listPrice.amount} {listPrice.currencyCode}
+					</span>
 				</li>
 				<li>
 					<span className="bold">Written by:</span> {authors}
 				</li>
 				<li>
-					<span className="bold">Published:</span> {publishedDate} <span>{isOldNew(publishedDate)}</span>
+					<span className="bold">Published:</span> {publishedDate}{' '}
+					<span>{isOldNew(publishedDate)}</span>
 				</li>
 				<li>
-					<span className="bold">Page count:</span> <span>{pageCount} - {setReadingLevel(pageCount)}</span>
+					<span className="bold">Page count:</span>{' '}
+					<span>
+						{pageCount} - {setReadingLevel(pageCount)}
+					</span>
 				</li>
 				<li>
 					<span className="bold">Categories:</span> {categories.join(', ')}

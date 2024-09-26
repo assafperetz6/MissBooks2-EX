@@ -29,3 +29,11 @@
 dialog.edit {
     display: flex;
 }
+
+.cheap {
+    color: green
+}
+
+.expensive {
+    color: red
+}
