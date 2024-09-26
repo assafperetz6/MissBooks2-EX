@@ -33,6 +33,13 @@ export function BookDetails({ bookId, onBack, onRemoveBook }) {
 		if (pageCount < 100) return 'Light Reading'
 	}
 
+	function isOldNew(publishedDate) {
+		const currDate = new Date
+
+		if (currDate.getFullYear() - publishedDate <= 1) return 'New'
+		if (currDate.getFullYear() - publishedDate > 10) return 'Vintage'
+	}
+
 	// function onSaveBook(ev, bookToEdit) {
 	//     ev.preventDefault()
 
@@ -61,6 +68,7 @@ export function BookDetails({ bookId, onBack, onRemoveBook }) {
 		language,
 		listPrice,
 	} = book
+
 	return (
 		<article className="book-details">
 			<h2 className="full">{title}</h2>
@@ -75,7 +83,7 @@ export function BookDetails({ bookId, onBack, onRemoveBook }) {
 					<span className="bold">Written by:</span> {authors}
 				</li>
 				<li>
-					<span className="bold">Published:</span> {publishedDate}
+					<span className="bold">Published:</span> {publishedDate} <span>{isOldNew(publishedDate)}</span>
 				</li>
 				<li>
 					<span className="bold">Page count:</span> <span>{pageCount} - {setReadingLevel(pageCount)}</span>
