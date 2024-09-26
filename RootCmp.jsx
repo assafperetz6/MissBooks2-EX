@@ -5,7 +5,7 @@ import { BookIndex } from './pages/BookIndex.jsx'
 const { useState } = React
 
 export function App() {
-    const [page, setPage] = useState('about')
+    const [page, setPage] = useState('book')
 
     function selectPage(pageName) {
         setPage(pageName)

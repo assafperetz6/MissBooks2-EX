@@ -1,49 +1,55 @@
 import { bookService } from '../services/book.service.js'
 import { BookList } from '../cmps/BookList.jsx'
 import { BookDetails } from './BookDetails.jsx'
+import { BookFilter } from './BookFilter.jsx'
 
 const { useState, useEffect } = React
 
 export function BookIndex() {
 	const [books, setBooks] = useState(null)
-	const [selectedBook, setSelectedBook] = useState(null)
+	const [selectedBookId, setSelectedBookId] = useState(null)
 
 	useEffect(() => {
 		bookService
 			.query()
 			.then(setBooks)
 			.catch((err) => console.log('err:', err))
-	}, [onSelectBook])
+	}, [])
 
 	function onSelectBook(bookId) {
-		bookService
-			.get(bookId)
-			.then(setSelectedBook)
-			.catch((err) => console.log('err:', err))
+		setSelectedBookId(bookId)
 	}
 
 	function onBack() {
-		setSelectedBook(null)
+		setSelectedBookId(null)
 	}
 
 	function onRemoveBook(bookId) {
 		bookService
 			.remove(bookId)
 			.then(setBooks((books) => books.filter((book) => book.id !== bookId)))
+			.then(onBack)
 			.catch((err) => console.log('err:', err))
-
-		onBack()
 	}
 
-	if (selectedBook)
-		return (
-			<BookDetails
-				book={selectedBook}
-				onBack={onBack}
-				onRemoveBook={onRemoveBook}
-                onSelectBook={onSelectBook}
-			/>
-		)
 	if (!books) return <div>Loading...</div>
-	return <BookList books={books} onSelectBook={onSelectBook} />
+
+	return (
+		<section className="book-index">
+			{selectedBookId && (
+				<BookDetails
+					bookId={selectedBookId}
+					onBack={onBack}
+					onRemoveBook={onRemoveBook}
+					onSelectBook={onSelectBook}
+				/>
+			)}
+			{!selectedBookId && (
+				<React.Fragment>
+					<BookFilter />
+					<BookList books={books} onSelectBook={onSelectBook} />
+				</React.Fragment>
+			)}
+		</section>
+	)
 }
