@@ -17,6 +17,7 @@ export function BookDetails({ book, onBack, onRemoveBook, onSelectBook }) {
 	} = book
 
     const [bookToEdit, setBookToEdit] = useState(null)
+	const setBookDetail = createSetter(setBookToEdit)
     const [isEdit, setIsEdit] = useState(false)
     
     useEffect(() => {
@@ -45,6 +46,8 @@ export function BookDetails({ book, onBack, onRemoveBook, onSelectBook }) {
         const { name: field, type } = target
         let { value } = target
 
+		console.log(field, type, value)
+
         switch (type) {
             case 'number':
             case 'range':
@@ -56,9 +59,13 @@ export function BookDetails({ book, onBack, onRemoveBook, onSelectBook }) {
                 break
         }
         
-        if (type === 'number') setBookToEdit(book => ({...book, listPrice: {...listPrice, amount: value}}))
+        if (field === 'listPrice') setBookToEdit(book => ({...book, listPrice: {...listPrice, amount: value}}))
+		else if (field === 'authors') setBookToEdit(book => ({...book, authors: value.split(',')}))
         else setBookToEdit(book => ({...book, [field]: value}))
     }
+
+	
+	
 
 	return (
 		<article className="book-details">
@@ -71,7 +78,7 @@ export function BookDetails({ book, onBack, onRemoveBook, onSelectBook }) {
 					{listPrice.currencyCode}
 				</li>
 				<li>
-					<span className="bold">Written by:</span> {authors.join(', ')}
+					<span className="bold">Written by:</span> {authors}
 				</li>
 				<li>
 					<span className="bold">Published:</span> {publishedDate}
@@ -95,9 +102,34 @@ export function BookDetails({ book, onBack, onRemoveBook, onSelectBook }) {
 					<input onChange={handleOnChange} type="text" name="authors" placeholder={authors}/>
 					<input onChange={handleOnChange} type="number" name="listPrice" placeholder={listPrice.amount}/>
 					<input onChange={handleOnChange} type="text" name="publishedDate" placeholder={publishedDate}/>
+					
+					<Input type="number" value={listPrice.amount} onChange={v => setBookToEdit(b => ({...b, listPrice: {...b.listPrice, amount: +v}}))} />
+					<ArrayInput value={authors} onChange={setBookDetail('authors')} />
+					<ArrayInput value={editors} onChange={setBookDetail('editors')} />
                     <button>Save</button>
 				</form>
 			</dialog>
 		</article>
 	)
 }
+
+function Input({ type = 'text', value, onChange }) {
+	return (
+		<input
+			type={type}
+			value={value}
+			onChange={ev => onChange(ev.target.value)}
+		/>
+	)
+}
+
+function ArrayInput({ value, onChange, seperator = ', ' }) {
+	return (
+		<Input
+			value={value.join(seperator)}
+			onChange={v => onChange(b => v.split(seperator))}
+		/>
+	)
+}
+
+const createSetter = setObject => key => value => setObject(object => ({...object, [key]: value }))

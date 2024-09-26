@@ -1,5 +1,8 @@
+const { useState } = React
+
 export function AboutUs() {
 	var user = { fullname: 'Puki Reactof', score: 87 }
+
 	return (
 		<section id="about-us">
 			<h1>About Us</h1>

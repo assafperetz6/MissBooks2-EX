@@ -1,5 +1,5 @@
 import { bookService } from '../services/book.service.js'
-import { BookList } from './BookList.jsx'
+import { BookList } from '../cmps/BookList.jsx'
 import { BookDetails } from './BookDetails.jsx'
 
 const { useState, useEffect } = React
@@ -13,7 +13,7 @@ export function BookIndex() {
 			.query()
 			.then(setBooks)
 			.catch((err) => console.log('err:', err))
-	}, [])
+	}, [onSelectBook])
 
 	function onSelectBook(bookId) {
 		bookService
