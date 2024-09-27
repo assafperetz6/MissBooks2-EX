@@ -1,0 +1,16 @@
+.filter-container {
+    display: grid;
+    gap: 5px;
+
+    padding: 10px;
+    border: 1px solid darkcyan;
+    margin: 20px;
+}
+
+.filter-container > * {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    min-height: 30px;
+}

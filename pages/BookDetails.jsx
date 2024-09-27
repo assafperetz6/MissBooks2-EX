@@ -15,10 +15,9 @@ export function BookDetails({ bookId, onBack, onRemoveBook }) {
 		loadBook()
 	}, [])
 
-	// function onUpdateBook() {
-	//     setBookToEdit(bookId)
-	//     setIsEdit(true)
-	// }
+	function onUpdateBook() {
+	    setIsEdit(true)
+	}
 
 	function loadBook() {
 		bookService
@@ -108,6 +107,6 @@ export function BookDetails({ bookId, onBack, onRemoveBook }) {
 				<button onClick={() => onUpdateBook(bookId)}>Edit</button>
 				<button onClick={onBack}>Back</button>
 			</section>
-		</article>
+		</article>	
 	)
 }

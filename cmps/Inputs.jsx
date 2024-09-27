@@ -1,4 +1,4 @@
-export function Input({ type = 'text', value, onChange }) {
+export function Input({ type = 'text', value = '', onChange }) {
 	return (
 		<input
 			type={type}

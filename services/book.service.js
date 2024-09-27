@@ -3,7 +3,6 @@ import { saveToStorage, loadFromStorage, makeId } from './util.service.js'
 import { storageService } from './async-storage.service.js'
 
 const BOOK_KEY = 'BOOK_DB'
-var gFilterBy = { txt: '', price: 0 }
 _createBooks()
 
 
@@ -15,18 +14,19 @@ export const bookService = {
     remove,
     save,
     getNewBook,
-    getNextbookId
+    getNextbookId,
+    getDefaultFilter
 }
 
 function query(filterBy = {}) {
     return storageService.query(BOOK_KEY)
         .then(books => {
             if (filterBy.title) {
-                const regex = new RegExp(gFilterBy.title, 'i')
+                const regex = new RegExp(filterBy.title, 'i')
                 books = books.filter(book => regex.test(book.title))
             }
-            if (filterBy.price) {
-                books = books.filter(book => book.listPrice.amount >= filterBy.price)
+            if (filterBy.minPrice) {
+                books = books.filter(book => book.listPrice.amount >= filterBy.minPrice)
             }
             return books
         })
@@ -53,7 +53,7 @@ function getNewBook(title = '', author = '') {
 }
 
 function getDefaultFilter() {
-    return { txt: '', maxPrice: null }
+    return { title: '', minPrice: undefined }
 }
 
 function getNextbookId(bookId) {
