@@ -20,7 +20,7 @@ export function BookIndex() {
 			.then(setBooks)
 			.catch((err) => console.log('err:', err))
 	}
-	
+
 	function onSelectBook(bookId) {
 		setSelectedBookId(bookId)
 	}
