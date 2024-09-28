@@ -12,7 +12,7 @@ export function ArrayInput({ value, onChange, seperator = ', ' }) {
 	return (
 		<Input
 			value={value.join(seperator)}
-			onChange={value => onChange(book => value.split(seperator))}
+			onChange={onChange}
 		/>
 	)
 }

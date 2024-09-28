@@ -1,5 +1,5 @@
 import { bookService } from '../services/book.service.js'
-import { Input, ArrayInput } from '../cmps/Inputs.jsx'
+import { BookEdit } from '../cmps/BookEdit.jsx'
 
 const { useState, useEffect } = React
 
@@ -13,11 +13,7 @@ export function BookDetails({ bookId, onBack, onRemoveBook }) {
 
 	useEffect(() => {
 		loadBook()
-	}, [])
-
-	function onUpdateBook() {
-	    setIsEdit(true)
-	}
+	}, [isEdit])
 
 	function loadBook() {
 		bookService
@@ -44,19 +40,23 @@ export function BookDetails({ bookId, onBack, onRemoveBook }) {
 		if (price < 20) return 'cheap'
 	}
 
-	// function onSaveBook(ev, bookToEdit) {
-	//     ev.preventDefault()
+	function onUpdateBook() {
+	    setIsEdit(true)
+	}
 
-	//     bookService.save(bookToEdit)
-	//         .then(() => {
-	//             setIsEdit(false)
-	//             setBookToEdit(null)
-	//             onSelectBook(bookToEdit.id)
-	//         })
-	//         .catch(err => {
-	//             console.log('Had issues with book save:', err)
-	//         })
-	// }
+	function onCancelEdit() {
+		setIsEdit(false)
+	}
+
+	function saveBook(bookToEdit) {
+	    bookService.save(bookToEdit)
+	        .then(() => {
+	            setIsEdit(false)
+	        })
+	        .catch(err => {
+	            console.log('Had issues with book save:', err)
+	        })
+	}
 
 	if (!book) return <div>Loading...</div>
 
@@ -74,7 +74,8 @@ export function BookDetails({ bookId, onBack, onRemoveBook }) {
 	} = book
 
 	return (
-		<article className="book-details">
+		isEdit ? <BookEdit book={book} saveBook={saveBook} />
+		: <article className="book-details">
 			<h2 className="full">{title}</h2>
 			<img className="full" src={thumbnail} alt="book-img" />
 			<p>{description}</p>
@@ -86,7 +87,7 @@ export function BookDetails({ bookId, onBack, onRemoveBook }) {
 					</span>
 				</li>
 				<li>
-					<span className="bold">Written by:</span> {authors}
+					<span className="bold">Written by:</span> {authors.join(', ')}
 				</li>
 				<li>
 					<span className="bold">Published:</span> {publishedDate}{' '}
@@ -107,6 +108,6 @@ export function BookDetails({ bookId, onBack, onRemoveBook }) {
 				<button onClick={() => onUpdateBook(bookId)}>Edit</button>
 				<button onClick={onBack}>Back</button>
 			</section>
-		</article>	
+		</article>
 	)
 }
