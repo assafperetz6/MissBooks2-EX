@@ -1,6 +1,6 @@
 export function BookPreview({ book, idx, onSelectBook }) {
     return (           
-    <li className="book" onClick={() => onSelectBook(book.id)}>
+    <li className={`book ${book.listPrice.isOnSale ? 'on-sale' : ''}`} onClick={() => onSelectBook(book.id)}>
         <h2 className="full">{book.title}</h2>
         <img className="full" src={book.thumbnail} alt="" />
         <h3>By {book.authors}</h3>

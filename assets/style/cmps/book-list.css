@@ -1,13 +1,14 @@
 .book-list-container {
+    display: flex;
     padding: 20px;
 
     background-color:var(--clr2bg);
 }
 
 .book-list {
-    display: grid;
-
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 
     > * {
         display: grid;
@@ -29,10 +30,8 @@
 .book h2 {
     font-family: 'Courier New', Courier, monospace;
     font-size: 1.25rem;
-}
 
-.book img {
-    max-height: 250px;
+    text-wrap: wrap;
 }
 
 .book:hover {
@@ -50,4 +49,16 @@
     > * {
         border: .5px solid var(--gray2);
     }
+}
+
+.book.on-sale img{
+    position: relative;
+}
+
+.book.on-sale img::after{
+    content: '';
+    position: absolute;
+    inset: 50px;
+
+    background: black;
 }

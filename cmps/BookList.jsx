@@ -2,7 +2,7 @@ import { BookPreview } from './BookPreview.jsx'
 
 export function BookList({ books, onRemoveBook, onSelectBook }) {
 	return (
-		<section className="book-list-container flex">
+		<section className="book-list-container">
 			<ul className="book-list clean-list">
 				{books.map((book, idx) => (
 					<BookPreview
