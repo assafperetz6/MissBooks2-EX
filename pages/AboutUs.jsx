@@ -1,8 +1,6 @@
-const { useState } = React
+const { Outlet ,Link } = ReactRouterDOM
 
 export function AboutUs() {
-	var user = { fullname: 'Puki Reactof', score: 87 }
-
 	return (
 		<section id="about-us">
 			<h1>About Us</h1>
@@ -26,6 +24,13 @@ export function AboutUs() {
 			</p>
 			<p>Sincerely,</p>
 			<p>John Doe</p>
+
+			<nav>
+				<Link to="/about/team">Team</Link>
+				<Link to="/about/vision">Our vision</Link>
+			</nav>
+
+			<Outlet/>
 		</section>
 	)
 }

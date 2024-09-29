@@ -19,3 +19,9 @@
 .main-nav {
   gap: 10px;
 }
+
+a.active {
+  color: rgb(91, 180, 253);
+  font-weight: 600;
+  text-decoration: underline;
+}
