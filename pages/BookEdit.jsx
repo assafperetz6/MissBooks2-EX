@@ -2,20 +2,20 @@ const { useState, useEffect } = React
 const { Link, useParams, useNavigate } = ReactRouterDOM
 
 import { bookService } from '../services/book.service.js'
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { Input, ArrayInput } from '../cmps/Inputs.jsx'
 
 export function BookEdit({ saveBook }) {
-	const [bookToEdit, setBookToEdit] = useState(null)
+	const [bookToEdit, setBookToEdit] = useState(bookService.getNewBook())
 	const params = useParams()
 	const navigate = useNavigate()
 
 	useEffect(() => {
-		loadBook()
+		if(params.bookId) loadBook()
 	}, [])
 
 	function loadBook() {
-		bookService
-			.get(params.bookId)
+		bookService.get(params.bookId)
 			.then(setBookToEdit)
 			.catch((err) => console.error('err:', err))
 	}
@@ -23,9 +23,11 @@ export function BookEdit({ saveBook }) {
 	function saveBook(bookToEdit) {
 	    bookService.save(bookToEdit)
 	        .then(() => {
+				showSuccessMsg('Book was edited!')
 				navigate(`/book/${bookToEdit.id}`)
 	        })
 	        .catch(err => {
+				showErrorMsg('Problems saving changes')
 	            console.log('Had issues with book save:', err)
 	        })
 	}
@@ -34,14 +36,12 @@ export function BookEdit({ saveBook }) {
 
 	const {
 		title,
-		subtitle,
 		authors,
 		publishedDate,
 		description,
 		pageCount,
 		categories,
 		thumbnail,
-		language,
 		listPrice,
 	} = bookToEdit
 
@@ -80,9 +80,7 @@ export function BookEdit({ saveBook }) {
 								}
 							/>
 						</span>
-						<span>
-							{listPrice.amount} {listPrice.currencyCode}
-						</span>
+						<span>{listPrice.currencyCode}</span>
 					</li>
 					<li>
 						<span className="bold">

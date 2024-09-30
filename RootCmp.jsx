@@ -35,7 +35,7 @@ export function App() {
                        <Route path="*" element={<NotFound />} />
                     </Routes>
                 </main>
-                {/* <UserMsg /> */}
+                <UserMsg />
             </section>
         </Router>
     )

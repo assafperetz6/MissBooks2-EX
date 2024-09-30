@@ -28,6 +28,11 @@ export function BookIndex() {
 	return (
 		<section className="book-index">
 			<BookFilter filterBy={filterBy} setFilterBy={setFilterBy}/>
+			<section>
+				<button>
+					<Link to="/book/edit">Add new book</Link>
+				</button>
+			</section>
 			<BookList books={books} />
 		</section>
 	)

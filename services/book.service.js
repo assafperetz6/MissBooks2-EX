@@ -29,6 +29,7 @@ function query(filterBy = {}) {
 }
 
 function get(bookId) {
+	if (!bookId) return getNewBook()
 	return storageService.get(BOOK_KEY, bookId).then(_setNextPrevBookId)
 }
 
@@ -44,8 +45,17 @@ function save(book) {
 	}
 }
 
-function getNewBook(title = '', author = '') {
-	return { id: '', title, author }
+function getNewBook(title = 'Title', authors = ['Authors?']) {
+	return { id: '',
+		title,
+		authors,
+		publishedDate: '',
+		description: 'Description',
+		pageCount: '',
+		categories: [],
+		thumbnail: '',
+		listPrice: {amount: 1}
+	}
 }
 
 function getDefaultFilter() {

@@ -2,6 +2,7 @@ const { useState, useEffect } = React
 const { Link, useParams, useNavigate } = ReactRouterDOM
 
 import { bookService } from '../services/book.service.js'
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { BookEdit } from './BookEdit.jsx'
 
 export function BookDetails() {
@@ -44,8 +45,12 @@ export function BookDetails() {
 	function onRemoveBook(ev, bookId = book.id) {		
 		bookService
 			.remove(bookId)
+			.then(() => showSuccessMsg('Book removed successfully'))
 			.then(onBack)
-			.catch((err) => console.log('err:', err))
+			.catch(err => {
+				console.log('err:', err)
+				showErrorMsg('Problems removing book')
+			})
 	}
 
 	function onEditBook() {
