@@ -42,7 +42,36 @@
 
     justify-items: center;
 
+    margin-block-end: 20px;
     button {
         border: 1px solid black;
+    }
+}
+
+dialog.open {
+    display: block;
+}
+
+.review-list {
+    grid-column: 1 / -1;
+
+    display: flex;
+    width: 100%;
+    gap: 20px;
+
+    padding: 20px;
+    border-block-start: 1px solid black;
+
+    > li {
+        min-width: 80px;
+        padding: 10px;
+        border-radius: 10px;
+
+        text-align: center;
+        background-color: rgba(29, 102, 165, 0.192);
+
+        * {
+            margin-block-end: 20px;
+        }
     }
 }

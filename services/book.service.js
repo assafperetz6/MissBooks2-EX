@@ -13,6 +13,7 @@ export const bookService = {
 	getNewBook,
 	getNextbookId,
 	getDefaultFilter,
+	saveReview
 }
 
 function query(filterBy = {}) {
@@ -70,6 +71,16 @@ function getNextbookId(bookId) {
 	})
 }
 
+function saveReview(bookId, reviewToSave) {
+	return get(bookId).then(book => {
+		const review = _createReview(reviewToSave)
+
+		if (!book.reviews) book.reviews = []
+		book.reviews.unshift(review)
+		return save(book).then(() => review)
+	})
+}
+
 function _createBooks() {
 	let books = loadFromStorage(BOOK_KEY)
 	if (!books || !books.length) {
@@ -82,6 +93,11 @@ function _createBook(title, author) {
 	const book = getNewBook(title, author)
 	book.id = makeId()
 	return book
+}
+
+function _createReview(review) {
+	return {
+		id: makeId(), ...review}
 }
 
 function _setNextPrevBookId(book) {

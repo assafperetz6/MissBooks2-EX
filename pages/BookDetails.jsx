@@ -3,19 +3,23 @@ const { Link, useParams, useNavigate } = ReactRouterDOM
 
 import { bookService } from '../services/book.service.js'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
-import { BookEdit } from './BookEdit.jsx'
+import { ReviewList } from '../cmps/ReviewList.jsx'
 
 export function BookDetails() {
 	const [book, setBook] = useState(null)
+	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [reviewToAdd, setReviewToAdd] = useState({})
 	// const setBookDetail = createSetter(setBookToEdit)
 	// const createSetter = setObject => key => value => setObject(object => ({...object, [key]: value }))
 
 	const params = useParams()
 	const navigate = useNavigate()
 
+	let showModal = false
+
 	useEffect(() => {
 		loadBook()
-	}, [book])
+	}, [book, showModal])
 
 	function loadBook() {
 		bookService
@@ -57,6 +61,28 @@ export function BookDetails() {
 		navigate(`/book/edit/${book.id}`)
 	}
 
+	function onAddReview() {
+		setIsModalOpen(true)
+	}
+
+	function onSubmitReview(ev) {
+		ev.preventDefault()
+		
+		bookService.saveReview(book.id, reviewToAdd)
+			.then((review => {
+				console.log(review)
+				
+				const reviews = [review, ...book.reviews]
+				setBook(({ ...book, reviews }))
+			}))
+			.catch((err) => {
+				console.log('Error: ', err);
+				
+				showErrorMsg('Review failed')
+			})
+			.finally(setIsModalOpen(false))
+	}
+
 	function onBack() {
 		navigate('/book')
 	}
@@ -65,14 +91,12 @@ export function BookDetails() {
 
 	const {
 		title,
-		subtitle,
 		authors,
 		publishedDate,
 		description,
 		pageCount,
 		categories,
 		thumbnail,
-		language,
 		listPrice,
 	} = book
 	
@@ -106,17 +130,42 @@ export function BookDetails() {
 					<span className="bold">Categories:</span> {categories.join(', ')}
 				</li>
 			</ul>
+
 			<section className="actions full">
+
 				<section className="nav-btn">
 					<button><Link to={`/book/${book.prevBook}`}>Previous Book</Link></button>
 					<button><Link to={`/book/${book.nextBook}`}>Next Book</Link></button>
 				</section>
+
 				<section>
 					<button onClick={onRemoveBook}>Delete</button>
 					<button onClick={onEditBook}>Edit</button>
+					<button onClick={() => onAddReview()}>Add Review</button>
 					<button onClick={onBack}>Back</button>
 				</section>
+
 			</section>
+
+			<dialog className={isModalOpen ? 'open' : ''}>
+				<form method="dialog" className="flex justify-center flex-column space-between" onSubmit={onSubmitReview}>
+					<label htmlFor="fullName">Full name</label>
+					<input id="fullName" name="fullName" type="text" onChange={ev => setReviewToAdd(prev => ({...prev, fullName: ev.target.value}))} />
+					
+					<label htmlFor="rating">Rating</label>
+					<input id="rating" name="rating" type="number" min="1" max="5" onChange={ev => setReviewToAdd(prev => ({...prev, rating: ev.target.value}))} />
+					
+					<label htmlFor="readAt">Read at:</label>
+					<input id="readAt" name="readAt" type="date" onChange={ev => setReviewToAdd(prev => ({...prev, readAt: ev.target.value}))} />
+					
+					<label htmlFor="content">Write your review:</label>
+					<input id="content" name="content" type="text" onChange={ev => setReviewToAdd(prev => ({...prev, content: ev.target.value}))} />
+
+					<button onClick={() => setIsModalOpen(false)}>Close</button>
+					<button>Submit</button>
+				</form>
+			</dialog>
+			{book.reviews && <ReviewList reviews={book.reviews}/>}
 		</article>
 	)
 }
