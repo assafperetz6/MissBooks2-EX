@@ -1,9 +1,11 @@
+const { useState, useEffect } = React
+const { Link } = ReactRouterDOM
+
 import { bookService } from '../services/book.service.js'
 import { Input, ArrayInput } from '../cmps/Inputs.jsx'
 
-const { useState, useEffect } = React
 
-export function BookEdit({ book, saveBook, onCancelEdit }) {
+export function BookEdit({ book, saveBook, setIsEdit }) {
 	const [bookToEdit, setBookToEdit] = useState(book)
 
 	// useEffect(() => {
@@ -19,6 +21,10 @@ export function BookEdit({ book, saveBook, onCancelEdit }) {
 
 	function onSaveBook(bookToEdit) {
 		saveBook(bookToEdit)
+	}
+
+	function onCancelEdit() {
+		navigate(`/book/${book.id}`)
 	}
 
 	if (!bookToEdit) return <div>Loading...</div>
@@ -129,7 +135,7 @@ export function BookEdit({ book, saveBook, onCancelEdit }) {
 				</li>
 			</ul>
 			<section className="book-actions full">
-				<button onClick={() => (onCancelEdit = { onCancelEdit })}>Back</button>
+				<button onClick={() => setIsEdit(false)}><Link to={`/book/${book.id}`}>Cancel</Link></button>
 				<button onClick={() => onSaveBook(bookToEdit)}>Save</button>
 			</section>
 		</article>

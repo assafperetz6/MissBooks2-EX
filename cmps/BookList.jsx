@@ -8,11 +8,9 @@ export function BookList({ books, onRemoveBook }) {
 			{books.length ? (
 				<ul className="book-list clean-list">
 					{books.map((book) => (
-						<li className={`book ${book.listPrice.isOnSale ? 'on-sale' : ''}`} onClick={() => console.log(book.id)} key={book.id}>
-							<BookPreview
-								book={book}
-								onRemoveBook={onRemoveBook}
-							/>
+						<li className={`book ${book.listPrice.isOnSale ? 'on-sale' : ''}`} key={book.id}>
+							<BookPreview book={book} onRemoveBook={onRemoveBook} />
+							<button><Link to={`/book/${book.id}`}>Details</Link></button>
 						</li>
 					))}
 				</ul>
