@@ -26,14 +26,23 @@
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-dialog.edit {
-    display: flex;
-}
-
 .cheap {
     color: green
 }
 
 .expensive {
     color: red
+}
+
+.actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    width: 100%;
+
+    justify-items: center;
+
+    button {
+        border: 1px solid black;
+    }
 }
