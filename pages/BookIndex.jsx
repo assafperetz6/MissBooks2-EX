@@ -23,22 +23,6 @@ export function BookIndex() {
 			.catch((err) => console.log('err:', err))
 	}
 
-	function onSelectBook(bookId) {
-		setSelectedBookId(bookId)
-	}
-
-	function onBack() {
-		setSelectedBookId(null)
-	}
-
-	function onRemoveBook(bookId) {
-		bookService
-			.remove(bookId)
-			.then(setBooks((books) => books.filter((book) => book.id !== bookId)))
-			.then(onBack)
-			.catch((err) => console.log('err:', err))
-	}
-
 	if (!books) return <div>Loading...</div>
 
 	return (

@@ -1,23 +1,26 @@
+const { useState, useEffect } = React
+const { Link, useParams, useNavigate } = ReactRouterDOM
+
 import { bookService } from '../services/book.service.js'
 import { BookEdit } from '../cmps/BookEdit.jsx'
 
-const { useState, useEffect } = React
-
-export function BookDetails({ bookId, onBack, onRemoveBook }) {
+export function BookDetails() {
 	const [isEdit, setIsEdit] = useState(false)
 
 	const [book, setBook] = useState(null)
 	// const setBookDetail = createSetter(setBookToEdit)
-
 	// const createSetter = setObject => key => value => setObject(object => ({...object, [key]: value }))
+
+	const params = useParams()
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		loadBook()
-	}, [isEdit])
+	}, [book, isEdit])
 
 	function loadBook() {
 		bookService
-			.get(bookId)
+			.get(params.bookId)
 			.then(setBook)
 			.catch((err) => console.error('err:', err))
 	}
@@ -40,12 +43,16 @@ export function BookDetails({ bookId, onBack, onRemoveBook }) {
 		if (price < 20) return 'cheap'
 	}
 
-	function onUpdateBook() {
-	    setIsEdit(true)
+	function onRemoveBook(ev, bookId = book.id) {		
+		bookService
+			.remove(bookId)
+			.then(onBack)
+			.catch((err) => console.log('err:', err))
 	}
 
-	function onCancelEdit() {
-		setIsEdit(false)
+	function onEditBook() {
+		setIsEdit(true)
+		navigate(`/book/${book.id}/edit`)
 	}
 
 	function saveBook(bookToEdit) {
@@ -56,6 +63,10 @@ export function BookDetails({ bookId, onBack, onRemoveBook }) {
 	        .catch(err => {
 	            console.log('Had issues with book save:', err)
 	        })
+	}
+
+	function onBack() {
+		navigate('/book')
 	}
 
 	if (!book) return <div>Loading...</div>
@@ -72,9 +83,10 @@ export function BookDetails({ bookId, onBack, onRemoveBook }) {
 		language,
 		listPrice,
 	} = book
+	
 
 	return (
-		isEdit ? <BookEdit book={book} saveBook={saveBook} />
+		isEdit ? <BookEdit book={book} saveBook={saveBook} setIsEdit={setIsEdit} />
 		: <article className="book-details">
 			<h2 className="full">{title}</h2>
 			<img className="full" src={thumbnail} alt="book-img" />
@@ -103,10 +115,16 @@ export function BookDetails({ bookId, onBack, onRemoveBook }) {
 					<span className="bold">Categories:</span> {categories.join(', ')}
 				</li>
 			</ul>
-			<section className="book-actions full">
-				<button onClick={() => onRemoveBook(bookId)}>Delete</button>
-				<button onClick={() => onUpdateBook(bookId)}>Edit</button>
-				<button onClick={onBack}>Back</button>
+			<section className="actions full">
+				<section className="nav-btn">
+					<button><Link to={`/book/${book.prevBook}`}>Previous Book</Link></button>
+					<button><Link to={`/book/${book.nextBook}`}>Next Book</Link></button>
+				</section>
+				<section>
+					<button onClick={onRemoveBook}>Delete</button>
+					<button onClick={onEditBook}>Edit</button>
+					<button onClick={onBack}>Back</button>
+				</section>
 			</section>
 		</article>
 	)
