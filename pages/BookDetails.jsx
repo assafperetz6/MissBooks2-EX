@@ -2,11 +2,9 @@ const { useState, useEffect } = React
 const { Link, useParams, useNavigate } = ReactRouterDOM
 
 import { bookService } from '../services/book.service.js'
-import { BookEdit } from '../cmps/BookEdit.jsx'
+import { BookEdit } from './BookEdit.jsx'
 
 export function BookDetails() {
-	const [isEdit, setIsEdit] = useState(false)
-
 	const [book, setBook] = useState(null)
 	// const setBookDetail = createSetter(setBookToEdit)
 	// const createSetter = setObject => key => value => setObject(object => ({...object, [key]: value }))
@@ -16,7 +14,7 @@ export function BookDetails() {
 
 	useEffect(() => {
 		loadBook()
-	}, [book, isEdit])
+	}, [book])
 
 	function loadBook() {
 		bookService
@@ -51,18 +49,7 @@ export function BookDetails() {
 	}
 
 	function onEditBook() {
-		setIsEdit(true)
-		navigate(`/book/${book.id}/edit`)
-	}
-
-	function saveBook(bookToEdit) {
-	    bookService.save(bookToEdit)
-	        .then(() => {
-	            setIsEdit(false)
-	        })
-	        .catch(err => {
-	            console.log('Had issues with book save:', err)
-	        })
+		navigate(`/book/edit/${book.id}`)
 	}
 
 	function onBack() {
@@ -86,8 +73,7 @@ export function BookDetails() {
 	
 
 	return (
-		isEdit ? <BookEdit book={book} saveBook={saveBook} setIsEdit={setIsEdit} />
-		: <article className="book-details">
+		<article className="book-details">
 			<h2 className="full">{title}</h2>
 			<img className="full" src={thumbnail} alt="book-img" />
 			<p>{description}</p>
